@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Exchange — Currency Converter</title>
+  <meta name="description" content="Convert between 160+ currencies, see what you'd have gained or lost by converting on a past date, and explore exchange-rate history. Powered by the Frankfurter API.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <a href="#" class="brand">Exchange<span class="dot">.</span></a>
+      <span class="updated" id="updated"></span>
+      <button class="icon-btn" id="themeToggle" aria-label="Toggle colour theme">
+        <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><path fill="currentColor" d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="ticker" id="ticker" aria-label="Latest rates">
+    <div class="ticker-track" id="tickerTrack"></div>
+  </div>
+
+  <main class="wrap">
+    <div class="tools">
+      <!-- ───────────── Converter ───────────── -->
+      <section id="convert" class="tool">
+        <h2 class="lbl">Convert</h2>
+        <div class="convert-row">
+          <input id="cAmount" class="amount" type="text" inputmode="decimal" value="1,000" autocomplete="off" aria-label="Amount">
+          <div class="picker" id="cFrom" data-default="GBP" data-label="From currency"></div>
+          <button class="icon-btn swap" id="cSwap" aria-label="Swap currencies" title="Swap">
+            <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M7 4 3 8l4 4M3 8h14M17 20l4-4-4-4M21 16H7"/></svg>
+          </button>
+          <div class="picker" id="cTo" data-default="EUR" data-label="To currency"></div>
+        </div>
+        <div class="big" id="cResult" aria-live="polite">—</div>
+        <p class="meta" id="cMeta">Loading rates…</p>
+      </section>
+
+      <!-- ───────────── Hindsight ───────────── -->
+      <section id="hindsight" class="tool">
+        <h2 class="lbl">Hindsight <span class="lbl-note">— if I’d converted on</span></h2>
+        <div class="hs-row">
+          <label class="suffix-field">
+            <input id="hAmount" class="amount" type="text" inputmode="decimal" value="10,000" autocomplete="off" aria-label="Amount">
+            <span class="suffix" id="hCode">GBP</span>
+          </label>
+          <input id="hDate" type="date" value="2016-06-23" aria-label="Date">
+        </div>
+        <div class="presets" id="hPresets" aria-label="Notable dates"></div>
+        <div id="hOut" aria-live="polite"></div>
+      </section>
+    </div>
+
+    <!-- ───────────── Trends ───────────── -->
+    <section id="trends" class="trends">
+      <div class="trend-head">
+        <div class="trend-now">
+          <span class="lbl" id="tPair">GBP/EUR</span>
+          <span class="trend-rate" id="tRate">—</span>
+          <span class="trend-change" id="tChange"></span>
+        </div>
+        <div class="trend-controls">
+          <div class="segmented" id="tRange" role="tablist" aria-label="Time range">
+            <button data-range="1Y" class="active">1Y</button>
+            <button data-range="5Y">5Y</button>
+            <button data-range="10Y">10Y</button>
+            <button data-range="20Y">20Y</button>
+            <button data-range="MAX">Max</button>
+          </div>
+          <label class="toggle">
+            <input type="checkbox" id="tEvents" checked>
+            <span class="track"><span class="thumb"></span></span>
+            Events
+          </label>
+        </div>
+      </div>
+      <p class="meta" id="tStats"></p>
+
+      <div class="chart" id="chart">
+        <div class="chart-status" id="chartStatus">Loading…</div>
+      </div>
+
+      <ol class="events" id="tEventList"></ol>
+    </section>
+  </main>
+
+  <footer class="wrap footer">
+    Rates from the <a href="https://frankfurter.dev" target="_blank" rel="noopener">Frankfurter API</a>, blended from central-bank and market sources. Reference rates only — not for trading.
+  </footer>
+
+  <div class="tooltip" id="tooltip" hidden></div>
+  <script src="app.js"></script>
+</body>
+</html>
